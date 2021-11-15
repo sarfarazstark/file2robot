@@ -8,9 +8,9 @@
     "Files"
   ],
   "logo": "https://telegra.ph/file/bdd3352951be090a56590.jpg",
-  "success_url": "https://telegram.dog/filestore_Nsbot",
-  "website": "https://github.com/Ns-Bots/TG-File-Store",
-  "repository": "https://github.com/Ns-Bots/TG-File-Store",
+  "success_url": "https://telegram.dog/BlueWhalebots",
+  "website": "https://github.com/sarfarazstark/file2robot",
+  "repository": "https://github.com/sarfarazstark/file2robot,
   "env": {
     "WEBHOOK": {
       "description": "Setting this to ANYTHING will enable webhooks when in env mode",
