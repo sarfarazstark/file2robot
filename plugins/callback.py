@@ -6,11 +6,10 @@ import logging.config
 logging.getLogger().setLevel(logging.ERROR)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-from .commands import start
+from .commands import start, BATCH
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-OWNER_ID = os.environ.get("OWNER_ID")
-
+from config import *
 
 @Client.on_callback_query(filters.regex('^help$'))
 async def help_cb(c, m):
@@ -24,7 +23,11 @@ async def help_cb(c, m):
 
 **You can use me in channel too 😉**
 
-★ Make me admin in your channel with edit permission. Thats enough now continue uploading files in channel i will edit all posts and add share able link url buttons"""
+★ Make me admin in your channel with edit permission. Thats enough now continue uploading files in channel i will edit all posts and add share able link url buttons
+
+**How to enable uploader details in caption**
+
+★ Use /mode command to change and also you can use `/mode channel_id` to control caption for channel msg."""
 
     # creating buttons
     buttons = [
@@ -97,3 +100,20 @@ async def about_cb(c, m):
 async def home_cb(c, m):
     await m.answer()
     await start(c, m, cb=True)
+
+
+@Client.on_callback_query(filters.regex('^done$'))
+async def done_cb(c, m):
+    BATCH.remove(m.from_user.id)
+    c.cancel_listener(m.from_user.id)
+    await m.message.delete()
+
+
+@Client.on_callback_query(filters.regex('^delete'))
+async def delete_cb(c, m):
+    await m.answer()
+    cmd, msg_id = m.data.split("+")
+    chat_id = m.from_user.id if not DB_CHANNEL_ID else int(DB_CHANNEL_ID)
+    message = await c.get_messages(chat_id, int(msg_id))
+    await message.delete()
+    await m.message.edit("Deleted files successfully 👨‍✈️")
